@@ -62,7 +62,14 @@ module.exports = function(grunt) {
           
             buildStyles = function (callback) {
                 if (hasStyle) {
-                    grunt.file.write('tmp.scss', grunt.file.read('./node_modules/grunt-origami-demoer/scss/dev-overrides.scss', {encoding: 'utf8'}) + grunt.file.read('main.scss', {encoding: 'utf8'}));
+                    var hyphenName = bowerJson.name.replace(/\-module$/, ''),
+                        capsName = hyphenName.replace(/(?:^|\-)(\w)/g, function ($0, $1, $2) {
+                            return $1.toUpperCase();
+                        }),
+                        varOverrides = grunt.file.read('./node_modules/grunt-origami-demoer/scss/var-overrides.scss', {encoding: 'utf8'})
+                                        .replace(/\{\{ModuleName\}\}/g, capsName).replace(/\{\{module\-name\}\}/g, hyphenName);
+
+                    grunt.file.write('tmp.scss', varOverrides + grunt.file.read('main.scss', {encoding: 'utf8'}));
                     // build the sass
                     grunt.util.spawn({
                         cmd: 'sass',
@@ -76,6 +83,12 @@ module.exports = function(grunt) {
                 }
             },
 
+            buildStatics = function (callback) {
+                statics.forEach(function (file) {
+                    grunt.file.copy(file, 'bower_components/' + bowerJson.name + '/' + file);
+                });
+                callback(null, null);
+            },
           
             buildScripts = function (callback) {
                 if (hasScript) {
@@ -100,7 +113,7 @@ module.exports = function(grunt) {
             }
         });
 
-        async.parallel([buildTemplates, buildStyles, buildScripts], function (err, results) {
+        async.parallel([buildTemplates, buildStyles, buildScripts, buildStatics], function (err, results) {
             if (options.modernizr) {
                 grunt.file.copy((typeof options.modernizr === 'string' ? options.modernizr : 'bower_components/modernizr/modernizr.js'), 'demos/modernizr.js');
             }

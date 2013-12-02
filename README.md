@@ -42,5 +42,5 @@ A grunt task to generate demo pages for your origami module i.e. for each templa
 
 ## Still to be developed
 * Building of scripts
-* Inclusion of static assets using stylesheets or scripts
+* Inclusion of static assets using scripts
 * Partials in mustache templates
