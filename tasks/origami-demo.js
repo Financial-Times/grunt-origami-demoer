@@ -93,7 +93,7 @@ module.exports = function(grunt) {
                 hasStyle = true;
             } else if (item === 'main.js') {
                 hasScript = true;
-            } else if (item.indexOf('.mustache') > -1) {
+            } else if (item.indexOf('.mustache') > -1 || item.indexOf('.html') > -1) {
                 templates.push(item);
             } else {
                 statics.push(item);
