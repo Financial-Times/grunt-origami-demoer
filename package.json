@@ -1,24 +1,30 @@
 {
   "name": "grunt-origami-demoer",
-  "description": "Task for building a demo page for a module that conforms to the origami standard",
-  "version": "0.0.1",
-  "repository": "sdfes",
-  "dependencies": {},
+  "description": "Task for building demo pages for a module that conforms to the origami standard",
+  "version": "0.1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Financial-Times/grunt-origami-demoer.git"
+  },
+  "author": {
+    "name": "rhys-ft",
+    "email": "rhys.evans@ft.com"
+  },
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
   },
-  "devDependencies": {
+  "dependencies": {
     "grunt": "0.4.x",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-watch": "~0.4.1",
-    "grunt-contrib-sass": "~0.5.0",
-    "grunt-modernizr": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",    
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-copy": "~0.4.1",
     "mu2": "*",
     "async": "*"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/Financial-Times/grunt-origami-demoer/issues"
+  },
+  "homepage": "https://github.com/Financial-Times/grunt-origami-demoer",
+  "_id": "grunt-origami-demoer@0.1.0",
+  "_from": "grunt-origami-demoer@*"
 }
