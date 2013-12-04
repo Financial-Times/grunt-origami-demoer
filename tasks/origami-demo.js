@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             hasStyle = false,
             hasScript = false,
             templates = [],
-            statics = [],
+            assets = [],
             options = this.options({
                 modernizr: true
             }),
@@ -34,9 +34,9 @@ module.exports = function(grunt) {
                 viewModel.oDemoStyle = hasStyle ? '<link rel="stylesheet" href="main.css" />' : '';
                 viewModel.oDemoScript = hasScript ? '<script src="main.js"></script>' : '';
                 viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr.js"></script>' : '';
-                viewModel.oDemoTitle = bowerJson.name.split('-').map(function (item) {
-                    return item.charAt(0).toUpperCase() + item.substr(1);
-                }).join (' ');
+                viewModel.oDemoTitle = bowerJson.name.split('-').join (' ').replace(/^\w/, function ($0) {
+                    return $0.toUpperCase();
+                });
                 
                 async.each(templates, function (template, itemCallback) {
                     var name = template.split('.')[0];
@@ -70,6 +70,7 @@ module.exports = function(grunt) {
                                         .replace(/\{\{ModuleName\}\}/g, capsName).replace(/\{\{module\-name\}\}/g, hyphenName);
 
                     grunt.file.write('tmp.scss', varOverrides + grunt.file.read('main.scss', {encoding: 'utf8'}));
+                    
                     // build the sass
                     grunt.util.spawn({
                         cmd: 'sass',
@@ -83,8 +84,8 @@ module.exports = function(grunt) {
                 }
             },
 
-            buildStatics = function (callback) {
-                statics.forEach(function (file) {
+            buildAssets = function (callback) {
+                assets.forEach(function (file) {
                     grunt.file.copy(file, 'bower_components/' + bowerJson.name + '/' + file);
                 });
                 callback(null, null);
@@ -92,7 +93,7 @@ module.exports = function(grunt) {
           
             buildScripts = function (callback) {
                 if (hasScript) {
-                    // build the script - need to set options probably and then use require or something
+                    // build the script - need to set options probably and then use require or something... or just call the build service?
                 } else {
                     callback(null, null);
                 }
@@ -106,14 +107,14 @@ module.exports = function(grunt) {
                 hasStyle = true;
             } else if (item === 'main.js') {
                 hasScript = true;
-            } else if (item.indexOf('.mustache') > -1 || item.indexOf('.html') > -1) {
+            } else if (['mu', 'ms', 'mustache', 'html'].indexOf(item.split('.').pop()) > -1) {
                 templates.push(item);
             } else {
-                statics.push(item);
+                assets.push(item);
             }
         });
 
-        async.parallel([buildTemplates, buildStyles, buildScripts, buildStatics], function (err, results) {
+        async.parallel([buildTemplates, buildStyles, buildScripts, buildAssets], function (err, results) {
             if (options.modernizr) {
                 grunt.file.copy((typeof options.modernizr === 'string' ? options.modernizr : 'bower_components/modernizr/modernizr.js'), 'demos/modernizr.js');
             }

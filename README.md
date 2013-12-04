@@ -36,11 +36,11 @@ A grunt task to generate demo pages for your origami module i.e. for each templa
 
 		};
 
-4.`grunt origami-demo`
-5.`grunt watch:origamiDemo`
+5. `grunt origami-demo`
+6. `grunt watch:origamiDemo`
         
 
-## Still to be developed
+## TODO
 * Building of scripts
 * Inclusion of static assets using scripts
 * Partials in mustache templates
