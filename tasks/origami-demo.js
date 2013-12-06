@@ -74,6 +74,7 @@ module.exports = function(grunt) {
                     // build the sass
                     grunt.util.spawn({
                         cmd: 'sass',
+                        // sass -I bower_components tmp.scss demos/main.css 
                         args: ['-I', 'bower_components', 'tmp.scss', 'demos/main.css']
                     }, function () {
                         grunt.file.delete('tmp.scss');
@@ -84,6 +85,8 @@ module.exports = function(grunt) {
                 }
             },
 
+
+
             buildAssets = function (callback) {
                 assets.forEach(function (file) {
                     grunt.file.copy(file, 'bower_components/' + bowerJson.name + '/' + file);
@@ -93,6 +96,7 @@ module.exports = function(grunt) {
           
             buildScripts = function (callback) {
                 if (hasScript) {
+                    grunt.file.copy('main.js', 'demos/main.js');
                     // build the script - need to set options probably and then use require or something... or just call the build service?
                 } else {
                     callback(null, null);
