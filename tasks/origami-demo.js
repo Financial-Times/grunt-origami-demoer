@@ -98,12 +98,15 @@ module.exports = function(grunt) {
                 if (hasScript) {
                     grunt.file.copy('main.js', 'demos/main.js');
                     // build the script - need to set options probably and then use require or something... or just call the build service?
-                }
+                } 
                 callback(null, null);
+                
             };
 
+        grunt.file.recurse('demos', function (file) {
+            grunt.file.delete(file);
+        });
         
-        grunt.file.delete('demos');
         
         bowerJson.main.forEach(function (item) {
             if (item === 'main.scss') {
