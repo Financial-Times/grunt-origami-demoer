@@ -19,8 +19,9 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
 		  grunt.initConfig({
 		    'origami-demo': {
 		      options: {
-		        modernizr: true, // if you are using modernizr but not including it using bower's default settings thi swill need to be set to the path to your local copy of modernizr
+		        modernizr: true, // if you are using modernizr but not including it using bower's default settings this will need to be set to the path to your local copy of modernizr
 		        viewModel: {}// a javascript object of example content to be consumed by your module's template
+		        scriptMode: null // set to 'browserify' if your scripts need to be built
 		      }
 		    },
 		    'watch': {
