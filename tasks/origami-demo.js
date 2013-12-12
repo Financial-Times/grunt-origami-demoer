@@ -98,7 +98,7 @@ module.exports = function(grunt) {
                         grunt.util.spawn({
                             // browserify main.js -o demos/main.js
                             cmd: 'browserify',
-                            args: ['main.js', '-o', 'demos/main.js']
+                            args: ['main.js', '-o', 'demos/main.js', '--debug']
                         }, function () {
                             callback(null, null);
                         });
