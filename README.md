@@ -1,6 +1,8 @@
 #grunt origami demoer
 
-A grunt task to generate demo pages for your origami module i.e. for each template listed in your `bower.json`'s `main` property, a html page including the template and all the module's styles and scripts will be created
+A grunt task to generate demo pages for your origami module.
+
+It will look in your `bower.json`'s `main` property, or optionally a Grunt config property, and create an HTML demo page for each template file it finds, including any styles and scripts it finds too.
 
 ##Usage
 
@@ -11,7 +13,7 @@ A grunt task to generate demo pages for your origami module i.e. for each templa
 
 4. In your module's root directory add a `Gruntfile.js` with something like the following content
 
-		module.exports = function(grunt) {
+    	module.exports = function(grunt) {
 
 		  // Project configuration.
 		  grunt.initConfig({
@@ -35,6 +37,17 @@ A grunt task to generate demo pages for your origami module i.e. for each templa
 		  grunt.registerTask('default', ['origami-demo']);
 
 		};
+        
+Optionally, you can also specify a `main` property in the grunt config, which will contain an array of template, style and script files. This should be used where your project requires demo pages built from templates that should not be consumed by other projects:
+
+    	  grunt.initConfig({
+		    'origami-demo': {
+		      options: {
+		        modernizr: true,
+		        viewModel: {},
+                main: ['example.mustache', 'main.scss']
+		      }
+		    }
 
 5. `grunt origami-demo`
 6. `grunt watch:origamiDemo`

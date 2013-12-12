@@ -58,7 +58,6 @@ module.exports = function(grunt) {
                     callback(null, null);
                 });
             },
-
           
             buildStyles = function (callback) {
                 if (hasStyle) {
@@ -85,8 +84,6 @@ module.exports = function(grunt) {
                 }
             },
 
-
-
             buildAssets = function (callback) {
                 assets.forEach(function (file) {
                     grunt.file.copy(file, 'bower_components/' + bowerJson.name + '/' + file);
@@ -103,12 +100,7 @@ module.exports = function(grunt) {
                 
             };
 
-        grunt.file.recurse('demos', function (file) {
-            grunt.file.delete(file);
-        });
-        
-        
-        bowerJson.main.forEach(function (item) {
+        function processItem(item) {
             if (item === 'main.scss') {
                 hasStyle = true;
             } else if (item === 'main.js') {
@@ -118,7 +110,26 @@ module.exports = function(grunt) {
             } else {
                 assets.push(item);
             }
+        }
+
+        if (!fs.existsSync('demos')) {
+            grunt.file.mkdir('demos');
+        }
+
+        grunt.file.recurse('demos', function (file) {
+            grunt.file.delete(file);
         });
+
+        // Files specified in grunt config: 
+        var gruntMain = grunt.config.get('origami-demo.options.main');
+        if (gruntMain && gruntMain.forEach) {
+            gruntMain.forEach(processItem);
+        }
+        
+        // Files specified in bower.json main property
+        if (bowerJson.main && bowerJson.main.forEach) {
+            bowerJson.main.forEach(processItem);
+        }
 
         async.parallel([buildTemplates, buildStyles, buildScripts, buildAssets], function (err, results) {
             if (options.modernizr) {
