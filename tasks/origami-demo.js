@@ -24,7 +24,8 @@ module.exports = function(grunt) {
             templates = [],
             assets = [],
             options = this.options({
-                modernizr: true
+                modernizr: true,
+                scriptMode: null
             }),
             viewModel = options.viewModel || {},
             done = this.async();
@@ -93,10 +94,21 @@ module.exports = function(grunt) {
           
             buildScripts = function (callback) {
                 if (hasScript) {
-                    grunt.file.copy('main.js', 'demos/main.js');
-                    // build the script - need to set options probably and then use require or something... or just call the build service?
+                    if (options.scriptMode === 'browserify') {
+                        grunt.util.spawn({
+                            // browserify main.js -o demos/main.js
+                            cmd: 'browserify',
+                            args: ['main.js', '-o', 'demos/main.js']
+                        }, function () {
+                            callback(null, null);
+                        });
+                        
+                    } else {
+                        grunt.file.copy('main.js', 'demos/main.js');
+                        callback(null, null);
+                    }
                 } 
-                callback(null, null);
+                
                 
             };
 

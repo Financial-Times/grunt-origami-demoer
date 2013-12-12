@@ -1,7 +1,7 @@
 {
   "name": "grunt-origami-demoer",
   "description": "Task for building demo pages for a module that conforms to the origami standard",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/Financial-Times/grunt-origami-demoer.git"
@@ -30,7 +30,7 @@
     "url": "https://github.com/Financial-Times/grunt-origami-demoer/issues"
   },
   "homepage": "https://github.com/Financial-Times/grunt-origami-demoer", 
-  "_id": "grunt-origami-demoer@0.1.10",
+  "_id": "grunt-origami-demoer@0.1.11",
   "_from": "grunt-origami-demoer@*",
   "readme": "#grunt origami demoer\n\nA grunt task to generate demo pages for your origami module i.e. for each template listed in your `bower.json`'s `main` property, a html page including the template and all the module's styles and scripts will be created\n\n##Usage\n\n1. `npm install grunt`\n2. `npm install grunt-origami-demoer`  \n3. [optional] `npm install grunt-contrib-watch`\n    For ease of reuse steps 1 - 3 should be encapsulated in the `devDependencies` property of your module's `package.json` file\n\n4. In your module's root directory add a `Gruntfile.js` with something like the following content\n\n\t\tmodule.exports = function(grunt) {\n\n\t\t  // Project configuration.\n\t\t  grunt.initConfig({\n\t\t    'origami-demo': {\n\t\t      options: {\n\t\t        modernizr: true, // if you are using modernizr but not including it using bower's default settings thi swill need to be set to the path to your local copy of modernizr\n\t\t        viewModel: {}// a javascript object of example content to be consumed by your module's template\n\t\t      }\n\t\t    },\n\t\t    'watch': {\n\t\t        'origami-demo': {\n\t                files: ['main.scss', 'main.js', 'bower-components/**/*'], //edit as necessary\n\t                tasks: ['origami-demo']\n\t            }\n\t\t    }\n\t\t  });\n\n\t\t  grunt.loadNpmTasks('grunt-origami-demoer');\n\t\t  grunt.loadNpmTasks('grunt-contrib-watch');\n\n\t\t  grunt.registerTask('default', ['origami-demo']);\n\n\t\t};\n\n4.`grunt origami-demo`\n5.`grunt watch:origamiDemo`\n        \n\n## Still to be developed\n* Building of scripts\n* Inclusion of static assets using stylesheets or scripts\n* Partials in mustache templates\n"
 }
