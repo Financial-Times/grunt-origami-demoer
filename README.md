@@ -22,6 +22,8 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
 		        modernizr: true, // if you are using modernizr but not including it using bower's default settings this will need to be set to the path to your local copy of modernizr
 		        viewModel: {}// a javascript object of example content to be consumed by your module's template
 		        scriptMode: null // set to 'browserify' if your scripts need to be built
+		        main: ['example.mustache'] //optional list of files to process in addition to those listed in bower.json.main
+		        sassExtras: 'demos.scss' // additional sass that gets included before your modules main.scss file
 		      }
 		    },
 		    'watch': {
@@ -39,22 +41,10 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
 
 		};
         
-Optionally, you can also specify a `main` property in the grunt config, which will contain an array of template, style and script files. This should be used where your project requires demo pages built from templates that should not be consumed by other projects:
-
-    	  grunt.initConfig({
-		    'origami-demo': {
-		      options: {
-		        modernizr: true,
-		        viewModel: {},
-                main: ['example.mustache', 'main.scss']
-		      }
-		    }
-
 5. `grunt origami-demo`
 6. `grunt watch:origamiDemo`
         
 
 ## TODO
-* Building of scripts
 * Inclusion of static assets using scripts
 * Partials in mustache templates
