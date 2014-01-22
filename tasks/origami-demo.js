@@ -66,12 +66,17 @@ module.exports = function(grunt) {
                         capsName = hyphenName.replace(/(?:^|\-)(\w)/g, function ($0, $1, $2) {
                             return $1.toUpperCase();
                         }),
-                        varOverrides = grunt.file.read('./node_modules/grunt-origami-demoer/scss/var-overrides.scss', {encoding: 'utf8'})
+                        sassOverrides = '';
+
+                    if (grunt.config.get('origami-demo.options.main')) {
+                        sassOverrides = grunt.file.read(grunt.config.get('origami-demo.options.sassExtras'));
+                    }
+                        
+                    sassOverrides +=  grunt.file.read('./node_modules/grunt-origami-demoer/scss/var-overrides.scss', {encoding: 'utf8'})
                                         .replace(/\{\{ModuleName\}\}/g, capsName).replace(/\{\{module\-name\}\}/g, hyphenName);
 
 
-
-                    grunt.file.write('tmp.scss', varOverrides + grunt.file.read('main.scss', {encoding: 'utf8'}));
+                    grunt.file.write('tmp.scss', sassOverrides + grunt.file.read('main.scss', {encoding: 'utf8'}));
                     
                     // build the sass
                     grunt.util.spawn({
