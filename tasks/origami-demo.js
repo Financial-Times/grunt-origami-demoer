@@ -68,7 +68,7 @@ module.exports = function(grunt) {
                         }),
                         sassOverrides = '';
 
-                    if (grunt.config.get('origami-demo.options.main')) {
+                    if (grunt.config.get('origami-demo.options.sassExtras')) {
                         sassOverrides = grunt.file.read(grunt.config.get('origami-demo.options.sassExtras'));
                     }
                         
