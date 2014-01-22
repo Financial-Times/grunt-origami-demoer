@@ -83,8 +83,12 @@ module.exports = function(grunt) {
                         cmd: 'sass',
                         // sass -I bower_components tmp.scss demos/main.css 
                         args: ['-I', 'bower_components', 'tmp.scss', 'demos/main.css']
-                    }, function () {
-                        grunt.file.delete('tmp.scss');
+                    }, function (err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            grunt.file.delete('tmp.scss');
+                        }
                         callback(null, null);
                     });
                 } else {
@@ -106,7 +110,10 @@ module.exports = function(grunt) {
                             // browserify main.js -o demos/main.js
                             cmd: 'browserify',
                             args: ['main.js', '-o', 'demos/main.js', '--debug']
-                        }, function () {
+                        }, function (err) {
+                            if (err) {
+                                console.log(err);
+                            }
                             callback(null, null);
                         });
                         
