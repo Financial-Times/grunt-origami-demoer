@@ -35,9 +35,7 @@ module.exports = function(grunt) {
                 viewModel.oDemoStyle = hasStyle ? '<link rel="stylesheet" href="main.css" />' : '';
                 viewModel.oDemoScript = hasScript ? '<script src="main.js"></script>' : '';
                 viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr.js"></script>' : '';
-                viewModel.oDemoTitle = bowerJson.name.split('-').join (' ').replace(/^\w/, function ($0) {
-                    return $0.toUpperCase();
-                });
+                viewModel.oDemoTitle = 'Origami ' + bowerJson.name.split('-').join (' ').substr(2) + ' - ' + bowerJson.name;
                 
                 async.each(templates, function (template, itemCallback) {
                     var name = template.split('.')[0];
@@ -109,7 +107,7 @@ module.exports = function(grunt) {
                         grunt.util.spawn({
                             // browserify main.js -o demos/main.js
                             cmd: 'browserify',
-                            args: ['main.js', '-o', 'demos/main.js', '--debug']
+                            args: ['main.js', '-t', 'debowerify', '-o', 'demos/main.js', '--debug']
                         }, function (err) {
                             if (err) {
                                 console.log(err);
@@ -121,9 +119,9 @@ module.exports = function(grunt) {
                         grunt.file.copy('main.js', 'demos/main.js');
                         callback(null, null);
                     }
-                } 
-                
-                
+                } else {
+                    callback(null, null);
+                }
             };
 
         function processItem(item) {
