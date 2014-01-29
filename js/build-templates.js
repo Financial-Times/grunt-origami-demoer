@@ -52,8 +52,6 @@ module.exports = function (grunt, config) {
                 var action = analyzeMustacheContent(content),
                     result;
 
-                    console.log($0, action);
-
                 if (action.type === 'origamiPartial') {
 
                     result = inlineOrigamiPartials(path.join(process.cwd(), (action.module !== config.parentModule ? 'bower_components/' + action.module : '') + action.template + action.fileExtension), action.module, {});

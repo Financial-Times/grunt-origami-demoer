@@ -36,7 +36,7 @@ module.exports = function(grunt) {
                                       
                     fs.readFile('./' + templateFile, {encoding: 'utf8'}, function (err, templateContent) {
                         fs.readFile('./node_modules/grunt-origami-demoer/templates/page.mustache', {encoding: 'utf8'}, function (err, tpl) {
-                            grunt.file.write('./demos/' + name + '.html', tpl.replace('{{oDemoTpl}}', '{{ > ./origami-templates/' + bowerJson.name + '/main.mustache}}'));
+                            grunt.file.write('./demos/' + name + '.html', tpl.replace('{{oDemoTpl}}', '{{ > ./origami-templates/' + bowerJson.name + '/' + templateFile + '}}'));
                             
                             templateBuilder(grunt, {
                                 // pathToCompiled: './origami',
