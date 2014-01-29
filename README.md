@@ -6,12 +6,9 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
 
 ##Usage
 
-1. `npm install grunt`
-2. `npm install grunt-origami-demoer`  
-3. [optional] `npm install grunt-contrib-watch`
-    For ease of reuse steps 1 - 3 should be encapsulated in the `devDependencies` property of your module's `package.json` file
-
-4. In your module's root directory add a `Gruntfile.js` with something like the following content
+1. `npm install grunt grunt-origami-demoer grunt-contrib-watch --save-dev`
+1. If your module uses javascript you will alos need to run `npm install browserify debowerify --save-dev`
+1. In your module's root directory add a `Gruntfile.js` with something like the following content
 
     	module.exports = function(grunt) {
 
@@ -41,8 +38,8 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
 
 		};
         
-5. `grunt origami-demo`
-6. `grunt watch:origamiDemo`
+1. `grunt origami-demo`
+1. `grunt watch:origamiDemo`
         
 
 ## TODO
