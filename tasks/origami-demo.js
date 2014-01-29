@@ -1,18 +1,11 @@
-/*
-  * grunt-contrib-uglify
-  * http://gruntjs.com/
-  *
-  * Copyright (c) 2013 "Cowboy" Ben Alman, contributors
-  * Licensed under the MIT license.
-  */
-
 'use strict';
 
 module.exports = function(grunt) {
 
     var fs = require('fs'),
         async = require('async'),
-        mu = require('mu2');
+        mu = require('mu2'),
+        templateBuilder = require('../js/build-templates');
 
   
     grunt.registerTask('origami-demo', 'Build static html pages to demo the origami module', function () {
@@ -36,13 +29,21 @@ module.exports = function(grunt) {
                 viewModel.oDemoScript = hasScript ? '<script src="main.js"></script>' : '';
                 viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr.js"></script>' : '';
                 viewModel.oDemoTitle = 'Origami ' + bowerJson.name.split('-').join (' ').substr(2) + ' - ' + bowerJson.name;
+                viewModel.oHoverClass = bowerJson.dependencies['o-hoverable'] ? ' o-hoverable-on' : '';
                 
-                async.each(templates, function (template, itemCallback) {
-                    var name = template.split('.')[0];
+                async.each(templates, function (templateFile, itemCallback) {
+                    var name = templateFile.split('.')[0];
                                       
-                    fs.readFile('./' + template, {encoding: 'utf8'}, function (err, innerTemplate) {
+                    fs.readFile('./' + templateFile, {encoding: 'utf8'}, function (err, templateContent) {
                         fs.readFile('./node_modules/grunt-origami-demoer/templates/page.mustache', {encoding: 'utf8'}, function (err, tpl) {
-                            grunt.file.write('./demos/' + name + '.html', tpl.replace('{{oDemoTpl}}', innerTemplate));
+                            grunt.file.write('./demos/' + name + '.html', tpl.replace('{{oDemoTpl}}', '{{ > ./origami-templates/' + bowerJson.name + '/main.mustache}}'));
+                            
+                            templateBuilder(grunt, {
+                                // pathToCompiled: './origami',
+                                parentModule: bowerJson.name,
+                                files: ['./demos/' + name + '.html']
+                            });
+
                             var result = '';
                             mu.clearCache();
                             mu.compileAndRender('demos/' + name + '.html', viewModel).on('data', function (data) {
