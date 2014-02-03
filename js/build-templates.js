@@ -21,14 +21,13 @@ module.exports = function (grunt, config) {
     function analyzeMustacheContent (content, module) {
         
         var parsedMustache,
-            origamiTemplatesDirectory = grunt.config('build-templates.pathToCompiled') || 'origami-templates',
-            origamiPartialRX = new RegExp('> *(?:' + origamiTemplatesDirectory.replace('/', '\\/') + '\\/)?(o\\-[a-z\\d\\-]+)((?:\\/[\\w\\d\\-_]+)*\\/[\\w\\d\\-]+)(\\.mustache|\\.html|\\.svg)?', 'gi'),
+            origamiTemplatesDirectory = config.pathToCompiled || './origami-templates',
+            origamiPartialRX = new RegExp('> *(?:(?:\\.?\\/)?' + origamiTemplatesDirectory.replace('/', '\\/') + '\\/)?(o\\-[a-z\\d\\-]+)((?:\\/[\\w\\d\\-_]+)*\\/[\\w\\d\\-]+)(\\.mustache|\\.html|\\.svg)?', 'gi'),
             // matches stings of the form o-modulename/path/to/template!items=path/to/partial,moreitems=path/to/other/partial
             normalPartialRX = /> *((?:\.?\/)?[a-z\d\-\/_]+)(\.mustache|\.html|\.svg)?/gi,
             normalTemplatePrefix = grunt.config('build-templates.cwd') || '';
 
         if (parsedMustache = origamiPartialRX.exec(content)) {
-            
             return {
                 type: 'origamiPartial',
                 module: parsedMustache[1],
@@ -58,33 +57,17 @@ module.exports = function (grunt, config) {
     function inlineOrigamiPartials (template, module, settings) {
         settings = settings || {};
 
-        var origamiTemplatesDirectory = grunt.config('build-templates.pathToCompiled') || 'origami-templates',
-            bowerDirectory = grunt.config('build-templates.pathToBower') || 'bower_components',
-            cwd = (grunt.config('build-templates.cwd') || ''),// + '/',
+        var origamiTemplatesDirectory = config.pathToCompiled || './origami-templates',
+            bowerDirectory = config.pathToBower || 'bower_components',
+            cwd = (config.cwd || ''),
             newTemplate = grunt.file.read(template).replace(/\{\{(?!\!) *([^(?:\}\})]*) *\}\}/g, function ($0, content) {
                 var action = analyzeMustacheContent(content, module),
                     result = $0;
 
                 if (action.type === 'origamiPartial') {
-
-                    var newPartial = grunt.config('build-templates.dynamicPartials.' + action.module + '.' + action.template.replace(/^\.?\/?/, ''));
-
-                    if (newPartial) {
-                        console.log(newPartial);
-                        if (newPartial.indexOf('o-') === 0) {
-                            result = inlineOrigamiPartials(path.join(process.cwd(), bowerDirectory + '/' + addFileExtension(newPartial)), newPartial.split('/').shift());
-                        } else {
-                            result = inlineOrigamiPartials(path.join(process.cwd(), addFileExtension(newPartial)), newPartial.split('/').shift());
-                        }
-
-                    } else {
-                        result = inlineOrigamiPartials(path.join(process.cwd(),bowerDirectory + '/' + action.module + action.template + action.fileExtension), action.module, {});
                     
-                        if (!module) {
-                            result = $0;
-                        }
-                    }
-
+                    result = inlineOrigamiPartials(path.join(process.cwd(), (action.module !== config.parentModule ? 'bower_components/' + action.module : '') + action.template + action.fileExtension), action.module, {});
+                    
                 } else {
                     if (action.type === 'normalPartial') {
                         // it's not an origami partial so we just treat it as a relative path
