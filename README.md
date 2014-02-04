@@ -40,8 +40,9 @@ It will look in your `bower.json`'s `main` property, or optionally a Grunt confi
         
 1. `grunt origami-demo`
 1. `grunt watch:origamiDemo`
+1. If you need to add styles to your demo beyond those in `main.scss` define a `demo.scss` file that imports your `main.scss file - it will automatically be used instead of main.scss by your demo
+
         
 
 ## TODO
 * Inclusion of static assets using scripts
-* Partials in mustache templates
