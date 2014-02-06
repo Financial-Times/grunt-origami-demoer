@@ -39,7 +39,6 @@ module.exports = function(grunt) {
                             grunt.file.write('./demos/' + name + '.html', tpl.replace('{{oDemoTpl}}', '{{ > ./origami-templates/' + bowerJson.name + '/' + templateFile + '}}'));
                             
                             templateBuilder(grunt, {
-                                // pathToCompiled: './origami',
                                 parentModule: bowerJson.name,
                                 files: ['./demos/' + name + '.html']
                             });
@@ -55,6 +54,10 @@ module.exports = function(grunt) {
                         });
                     });
                 }, function () {
+                    grunt.file.recurse('origami-templates', function (file) {
+                        grunt.file.delete(file);
+                    });
+                    grunt.file.delete('origami-templates');
                     callback(null, null);
                 });
             },
@@ -105,11 +108,12 @@ module.exports = function(grunt) {
           
             buildScripts = function (callback) {
                 if (hasScript) {
+
                     if (options.scriptMode === 'browserify') {
                         grunt.util.spawn({
                             // browserify main.js -o demos/main.js
                             cmd: 'browserify',
-                            args: ['main.js', '-t', 'debowerify', '-o', 'demos/main.js', '--debug']
+                            args: ['-r', './main.js:' + bowerJson.name, '-e', './main.js', '-t', 'debowerify', '-o', 'demos/main.js', '--debug']
                         }, function (err) {
                             if (err) {
                                 console.log(err);

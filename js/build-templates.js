@@ -66,7 +66,7 @@ module.exports = function (grunt, config) {
 
                 if (action.type === 'origamiPartial') {
                     
-                    result = inlineOrigamiPartials(path.join(process.cwd(), (action.module !== config.parentModule ? 'bower_components/' + action.module : '') + action.template + action.fileExtension), action.module, {});
+                    result = inlineOrigamiPartials(path.join(process.cwd(), (action.module !== config.parentModule ? 'bower_components/' + action.module : '') + '/' + action.template + action.fileExtension), action.module, {});
                     
                 } else {
                     if (action.type === 'normalPartial') {
