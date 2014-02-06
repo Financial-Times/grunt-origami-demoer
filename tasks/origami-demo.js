@@ -111,8 +111,9 @@ module.exports = function(grunt) {
 
                     if (options.scriptMode === 'browserify') {
                         grunt.util.spawn({
-                            // browserify main.js -o demos/main.js
                             cmd: 'browserify',
+                            // -r flags used in order to make main.js available via the origami module name
+                            // -e flag used in order to get main.js to run immediately
                             args: ['-r', './main.js:' + bowerJson.name, '-e', './main.js', '-t', 'debowerify', '-o', 'demos/main.js', '--debug']
                         }, function (err) {
                             if (err) {
