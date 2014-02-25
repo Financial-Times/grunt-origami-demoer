@@ -90,7 +90,7 @@ module.exports = function(grunt) {
             srcPath = "./" + srcPath;
             grunt.util.spawn({
                 cmd: 'browserify',
-                args: ['-r', srcPath + demoOptions.js + ':' + bowerJson.name, '-e', srcPath + demoOptions.js, '-t', 'debowerify', '-o', dest, '--debug']
+                args: ['-r', srcPath + demoOptions.js + ':' + bowerJson.name, '-e', srcPath + demoOptions.js, '-t', 'debowerify', '-t', 'brfs', '-o', dest, '--debug']
             }, function (err, result, code) {
                 if (err) {
                     grunt.log.error(err, result, code);
