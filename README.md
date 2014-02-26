@@ -2,47 +2,104 @@
 
 A grunt task to generate demo pages for your origami module.
 
-It will look in your `bower.json`'s `main` property, or optionally a Grunt config property, and create an HTML demo page for each template file it finds, including any styles and scripts it finds too.
+## Config options
 
-##Usage
+These options can be set once and will apply to all templates generated, unless overridden (see below).
 
-1. `npm install grunt grunt-origami-demoer grunt-contrib-watch --save-dev`
-1. If your module uses javascript you will alos need to run `npm install browserify debowerify --save-dev`
-1. In your module's root directory add a `Gruntfile.js` with something like the following content
+### sass
 
-    	module.exports = function(grunt) {
+Type: `String`
+Default: `main.scss`
 
-		  // Project configuration.
-		  grunt.initConfig({
-		    'origami-demo': {
-		      options: {
-		        modernizr: true, // if you are using modernizr but not including it using bower's default settings this will need to be set to the path to your local copy of modernizr
-		        viewModel: {}// a javascript object of example content to be consumed by your module's template
-		        scriptMode: null // set to 'browserify' if your scripts need to be built
-		        main: ['example.mustache'] //optional list of files to process in addition to those listed in bower.json.main
-		        sassExtras: 'demos.scss' // additional sass that gets included before your modules main.scss file
-		      }
-		    },
-		    'watch': {
-		        'origami-demo': {
-	                files: ['main.scss', 'main.js', 'bower-components/**/*'], //edit as necessary
-	                tasks: ['origami-demo']
-	            }
-		    }
-		  });
+### js
 
-		  grunt.loadNpmTasks('grunt-origami-demoer');
-		  grunt.loadNpmTasks('grunt-contrib-watch');
+Type: `String`
+Default: `main.js`
 
-		  grunt.registerTask('default', ['origami-demo']);
+### scriptMode
 
-		};
-        
-1. `grunt origami-demo`
-1. `grunt watch:origamiDemo`
-1. If you need to add styles to your demo beyond those in `main.scss` define a `demo.scss` file that imports your `main.scss file - it will automatically be used instead of main.scss by your demo
+Type: `string`
+Default: `normal`
 
-        
+Can be `normal` for plain JS, or `browserify`.
 
-## TODO
-* Inclusion of static assets using scripts
+### modernizr
+
+Type: `Boolean` `String`
+Default: true
+
+Whether to load Modernizr from bower_components, or to include it from another location specified as a string path.
+
+### silentSass
+
+Type: `Boolean`
+Default: `false`
+
+Whether to build the SASS with silent mode turned off.
+
+### pageTemplate
+
+Type: `String`
+Default: `./node_modules/grunt-origami-demoer/templates/page.mustache`
+
+The template to use for the outer HTML page.
+
+### demoTemplate
+
+Type: `String`
+Default: `main.mustache`
+
+The demo template to include inside the pageTemplate.
+
+### demoRoot
+
+Type: `String`
+Default: `./demo-src`
+
+The folder where demo templates, SASS and JS are expected to be (except for main.mustache, main.scss and main.js).
+
+### viewModel
+
+Type: `Object`
+Default: `{}`
+
+Data to to be rendered in the demo template.
+
+## Default demo file
+
+If none of these options are set, and the module has a `main.mustache` template listed in its `Bower.json` file's `main` property, then a single demo file called main.html will be created. This will include:
+
+* `main.css`, if a `main.scss` is listed in the Bower `main` property.
+* `main.js`, if a `main.js` is listed in the Bower `main` property.
+
+## Demo templates
+
+In addition to the `options` listed above, a `demos` property can also be set, which will list demo pages to be generated, keyed by a name that will be used for the resulting HTML file. For each entry in this object, overrides can be set for any of the above options.
+
+For example:
+
+    'origami-demo': {
+      'demos': {
+        'demo1': {
+            'template': 'demo1.mustache',
+            'sass': 'demo/demo1.scss',
+            'js': 'demo/demo1.js'
+        },
+        'demo2': {
+            'template': "demo2.mustache",
+            'sass': "demo/demo2.css",
+            'js': ["demo-common.js", "demo2.js"],
+            'pageTemplate': "demo-page.mustache",
+            'silentSass': true
+        }
+      }
+    }
+
+Using this mechanism, the default `main` demo can be overridden to use demo-specific SASS and/or JS instead of just including the module's `main.scss` or `main.js`:
+
+    'origami-demo': {
+      'demos': {
+        'main': {
+            'sass': 'demo.scss',
+            'js': 'demo.js'
+        },
