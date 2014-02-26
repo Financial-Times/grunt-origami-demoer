@@ -27,7 +27,8 @@
     "debowerify": "~0.5.2",
     "browserify": "~3.24.1",
     "node.extend": "~1.0.9",
-    "brfs": "~1.0.0"
+    "brfs": "~1.0.0",
+    "grunt-modernizr": "~0.5.1"
   },
   "readmeFilename": "README.md",
   "bugs": {

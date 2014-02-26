@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         if (demoOptions.js) {
             viewModel.oDemoScript = '<script src="' + demoOptions.js + '"></script>';
         }
-        viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr.js"></script>' : '';
+        viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr-custom.js"></script>' : '';
         viewModel.oDemoTitle = 'Origami ' + bowerJson.name.split('-').join (' ').substr(2) + ' - ' + bowerJson.name;
         viewModel.oHoverClass = bowerJson.dependencies['o-hoverable'] ? ' o-hoverable-on' : '';
 
@@ -200,6 +200,7 @@ module.exports = function(grunt) {
             } else {
                 grunt.log.ok("All demos done.");
             }
+            grunt.task.run(["origami-demo-modernizr"]);
             taskDone();
         })
     });
