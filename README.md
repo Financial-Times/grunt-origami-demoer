@@ -11,24 +11,32 @@ These options can be set once and will apply to all templates generated, unless 
 Type: `String`
 Default: `main.scss`
 
+The demo's SASS file.
+
 ### js
 
 Type: `String`
 Default: `main.js`
+
+The demo's JS file.
 
 ### scriptMode
 
 Type: `string`
 Default: `normal`
 
-Can be `normal` for plain JS, or `browserify`.
+Can be `normal` for plain JS, or `browserify`. If it's `browserify`, then the following transforms will be used:
+* [debowerify](https://github.com/eugeneware/debowerify)
+* [brfs](https://github.com/substack/brfs)
 
 ### modernizr
 
-Type: `Boolean` `String`
+Type: `Boolean`
 Default: true
 
-Whether to load Modernizr from bower_components, or to include it from another location specified as a string path.
+A custom `modernizr-custom.js` file is built based on the browser features declared in the `origami.json` file of the module and all it's dependencies.
+
+The `modernizr` option specifies whether a demo page should include this file. If so, it's included in the HTML head.
 
 ### silentSass
 
@@ -51,12 +59,14 @@ Default: `main.mustache`
 
 The demo template to include inside the pageTemplate.
 
+<!--
 ### demoRoot
 
 Type: `String`
 Default: `./demo-src`
 
 The folder where demo templates, SASS and JS are expected to be (except for main.mustache, main.scss and main.js).
+-->
 
 ### viewModel
 
