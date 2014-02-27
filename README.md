@@ -12,7 +12,7 @@ Requirements:
 Add the following to your `package.json`:
 
     "devDependencies": {
-        "grunt-origami-demoer": "https://github.com/Financial-Times/grunt-origami-demoer#1.2.0"
+        "grunt-origami-demoer": "https://github.com/Financial-Times/grunt-origami-demoer/tarball/master#1.2.0"
     }
     
 (installing from the NPM repository is deprecated)
