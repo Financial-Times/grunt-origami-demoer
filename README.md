@@ -2,6 +2,39 @@
 
 A grunt task to generate demo pages for your origami module.
 
+## Usage
+
+Requirements:
+
+* Node & NPM
+* Grunt
+
+Add the following to your `package.json`:
+
+    "devDependencies": {
+        "grunt-origami-demoer": "https://github.com/Financial-Times/grunt-origami-demoer#1.2.0"
+    }
+    
+(installing from the NPM repository is deprecated)
+
+Run `npm install`
+
+In your `Gruntfile.js` add the following:
+
+    grunt.loadNpmTasks('grunt-origami-demoer');
+
+You can then run the demo build task like so:
+
+    grunt origami-demo
+
+## Default demo file
+
+By default, if your module has a `main.mustache` template in its root, then a single demo file called main.html will be created in a `demos/` folder. This will include:
+
+* `main.css`, if a `main.scss` is listed in the Bower `main` property.
+* `main.js`, if a `main.js` is listed in the Bower `main` property.
+
+
 ## Config options
 
 These options can be set once and will apply to all templates generated, unless overridden (see below).
@@ -59,14 +92,12 @@ Default: `main.mustache`
 
 The demo template to include inside the pageTemplate.
 
-<!--
-### demoRoot
+### demoSrcRoot
 
 Type: `String`
-Default: `./demo-src`
+Default: `demo-src/`
 
 The folder where demo templates, SASS and JS are expected to be (except for main.mustache, main.scss and main.js).
--->
 
 ### viewModel
 
@@ -74,13 +105,6 @@ Type: `Object`
 Default: `{}`
 
 Data to to be rendered in the demo template.
-
-## Default demo file
-
-If none of these options are set, and the module has a `main.mustache` template listed in its `Bower.json` file's `main` property, then a single demo file called main.html will be created. This will include:
-
-* `main.css`, if a `main.scss` is listed in the Bower `main` property.
-* `main.js`, if a `main.js` is listed in the Bower `main` property.
 
 ## Demo templates
 

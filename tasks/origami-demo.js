@@ -15,7 +15,7 @@ module.exports = function(grunt) {
             modernizr: true,
             pageTemplate: "./node_modules/grunt-origami-demoer/src/templates/page.mustache",
             template: "main.mustache",
-            demoRoot: "demo-src",
+            demoSrcRoot: "demo-src/",
             viewModel: {}
         },
         taskOptions,
@@ -141,7 +141,6 @@ module.exports = function(grunt) {
                         callback();
                     });
             });
-
     }
 
     function clearExistingDemos() {
@@ -159,22 +158,16 @@ module.exports = function(grunt) {
         taskDemos = grunt.config.get('origami-demo.demos') || {};
         options = extend(true, defaultOptions, taskOptions);
         demos = extend(true, defaultDemos, taskDemos);
-
-        if (options._moduleRoot !== "") {
-            bowerJson = require('../../../bower.json');
-        } else {
-            bowerJson = {
-                name: "o-dummy",
-                dependencies: {}
-            }
-        }
-
-        var taskDone = this.async();
+        bowerJson = require('../../../bower.json');
+        var buildModernizr = false,
+            taskDone = this.async();
 
         async.eachSeries(Object.keys(demos), function(name, outerCallback) {
             var demoOptions = getDemoOptions(name),
-                demoSrcPath = (name === "main") ? "" : "demo-src/";
-
+                demoSrcPath = (name === "main" && demoOptions.template === "main.mustache") ? "" : options.demoSrcRoot;
+            if (demoOptions.modernizr) {
+                buildModernizr = true;
+            }
             async.parallel([
                 function(innerCallback) {
                     createSass(demoSrcPath, demoOptions, innerCallback);
@@ -200,7 +193,11 @@ module.exports = function(grunt) {
             } else {
                 grunt.log.ok("All demos done.");
             }
-            grunt.task.run(["origami-demo-modernizr"]);
+            if (buildModernizr) {
+                grunt.task.run(["origami-demo-modernizr"]);
+            } else {
+                grunt.log.ok("Modernizr build skipped.");
+            }
             taskDone();
         })
     });
