@@ -1,7 +1,7 @@
 {
   "name": "grunt-origami-demoer",
   "description": "Task for building demo pages for a module that conforms to the origami standard",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/Financial-Times/grunt-origami-demoer.git"
