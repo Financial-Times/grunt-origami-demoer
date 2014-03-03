@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         }
         var sassVars = {
             "o-grid-mq-type": 'width',
-            "o-assets-global-path": '"../bower_components/"'
+            "o-assets-global-path": '"http://build.origami.ft.com/files/"'
         };
         sassVars[bowerJson.name + "-is-silent"] = demoOptions.silentSass;
         createSassVariablesFile(sassVars, "sass-vars.scss");
