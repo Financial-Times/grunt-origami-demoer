@@ -45,7 +45,8 @@ module.exports = function(grunt) {
     }
 
     function createSass(srcPath, demoOptions, callback) {
-        var dest = 'demos/' + demoOptions.sass.replace('.scss', '.css');
+        var dest = 'demos/' + demoOptions.name + '.css';
+
         if (!fs.existsSync(srcPath + demoOptions.sass) || fs.existsSync(dest)) {
             callback();
             return;
@@ -61,7 +62,7 @@ module.exports = function(grunt) {
             sassVariables = grunt.file.read('sass-vars.scss', {encoding: 'utf8'}),
             demoStyles = grunt.file.read(srcPath + demoOptions.sass);
 
-        grunt.file.write('tmp.scss', sassReset + sassVariables + demoStyles);
+        grunt.file.write('tmp.scss', sassReset + sassVariables + '; @import "' + srcPath + demoOptions.sass + '";');
         grunt.file.delete("sass-vars.scss");
 
         grunt.util.spawn({
@@ -81,7 +82,7 @@ module.exports = function(grunt) {
     }
 
     function createJs(srcPath, demoOptions, callback) {
-        var dest = 'demos/' + demoOptions.js;
+        var dest = 'demos/' + demoOptions.name + '.js';
         if (!fs.existsSync(srcPath + demoOptions.js) || fs.existsSync(dest)) {
             callback();
             return;
@@ -111,15 +112,17 @@ module.exports = function(grunt) {
     function createHtml(srcPath, demoOptions, callback) {
         var viewModel = demoOptions.viewModel,
             dest = 'demos/' + demoOptions.name + ".html";
+
+
         if (!fs.existsSync(srcPath + demoOptions.template) || fs.existsSync(dest)) {
             callback();
             return;
         }
         if (demoOptions.sass) {
-            viewModel.oDemoStyle = '<link rel="stylesheet" href="' + demoOptions.sass.replace('.scss', '.css') + '" />';
+            viewModel.oDemoStyle = '<link rel="stylesheet" href="' + demoOptions.name + '.css" />';
         }
         if (demoOptions.js) {
-            viewModel.oDemoScript = '<script src="' + demoOptions.js + '"></script>';
+            viewModel.oDemoScript = '<script src="' + demoOptions.name + '.js"></script>';
         }
         viewModel.oDemoModernizr = options.modernizr ? '<script src="modernizr-custom.js"></script>' : '';
         viewModel.oDemoTitle = 'Origami ' + bowerJson.name.split('-').join (' ').substr(2) + ' - ' + bowerJson.name;
@@ -168,6 +171,7 @@ module.exports = function(grunt) {
             if (demoOptions.modernizr) {
                 buildModernizr = true;
             }
+
             async.parallel([
                 function(innerCallback) {
                     createSass(demoSrcPath, demoOptions, innerCallback);
@@ -199,7 +203,7 @@ module.exports = function(grunt) {
                 grunt.log.ok("Modernizr build skipped.");
             }
             taskDone();
-        })
+        });
     });
 
 };
