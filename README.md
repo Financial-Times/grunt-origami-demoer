@@ -1,5 +1,9 @@
 #grunt origami demoer
 
+___
+**DEPRECATED: Use [origami-build-tools](https://github.com/Financial-Times/origami-build-tools) instead.**
+___
+
 A grunt task to generate demo pages for your origami module.
 
 ## Usage
